@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Template Name="Double Image">
+	<Content>
+		<Image ID="Image1" Position="5,5" Size="235,310" Source="" Stretch="Uniform" Rotation="0" />
+		<Image ID="Image2" Position="245,5" Size="230,310" Source="" Stretch="Uniform" Rotation="0" />
+	</Content>
+</Template>
+

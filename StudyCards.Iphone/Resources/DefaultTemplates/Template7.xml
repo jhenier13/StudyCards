@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Template Name="Link and Image">
+	<Content>
+		<Link ID="Link1" Position="5,5" Size="235,310" Label="" WebLink="" FontSize="16" Alignment="Center" />
+		<Image ID="Image1" Position="245,5" Size="230,310" Source="" Stretch="Uniform" Rotation="0" />
+	</Content>
+</Template>
+

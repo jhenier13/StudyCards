@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Template Name="Title and Description">
+	<Content>
+		<Line ID="Line1" Position="5,5" Size="235,310" Content="" FontFamily="Arial" IsBold="True" Color="Black" FontSize="20" Alignment="Center" />
+		<Text ID="Text1" Position="245,5" Size="230,310" Content="" FontFamily="Arial" Color="Black" FontSize="15"/>
+	</Content>
+</Template>
+

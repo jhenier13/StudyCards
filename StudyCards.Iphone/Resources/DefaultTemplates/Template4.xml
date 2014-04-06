@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Template Name="Image">
+	<Content>
+		<Image ID="Image1" Position="5,5" Size="470,310" Source="" Stretch="Uniform" Rotation="0" />
+	</Content>
+</Template>
