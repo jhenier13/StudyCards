@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
+using StudyCards.Mobile.Persistence;
 
 namespace StudyCards.Iphone
 {
@@ -14,7 +15,7 @@ namespace StudyCards.Iphone
     {
         // class-level declarations
         UIWindow window;
-        StudyCards_IphoneViewController viewController;
+        CustomNavigationController __viewController;
         //
         // This method is invoked when the application has loaded and is ready to run. In this
         // method you should instantiate the window, load the UI into it and then make the window
@@ -24,10 +25,12 @@ namespace StudyCards.Iphone
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            DataBaseUpdater.TryCreateDataBase();
+
             window = new UIWindow(UIScreen.MainScreen.Bounds);
 			
-            viewController = new StudyCards_IphoneViewController();
-            window.RootViewController = viewController;
+            __viewController = new CustomNavigationController();
+            window.RootViewController = __viewController;
             window.MakeKeyAndVisible();
 			
             return true;

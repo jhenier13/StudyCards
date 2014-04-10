@@ -112,16 +112,23 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="StudyCards_IphoneViewController.cs" />
-    <Compile Include="StudyCards_IphoneViewController.designer.cs">
-      <DependentUpon>StudyCards_IphoneViewController.cs</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <InterfaceDefinition Include="StudyCards_IphoneViewController.xib" />
+    <Compile Include="CustomNavigationController.cs" />
+    <Compile Include="DesksView.cs" />
+    <Compile Include="DesksTableSource.cs" />
+    <Compile Include="DeskEditorView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Resources\DefaultTemplates\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StudyCards.IOSLink\StudyCards.IOSLink.csproj">
+      <Project>{22A15D7D-70FF-4B90-8F77-2B59CE8D316F}</Project>
+      <Name>StudyCards.IOSLink</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\LobaSoft.IOS\UIComponents\UIComponents.csproj">
+      <Project>{F544C0A6-7A53-4629-B700-907342C0AF88}</Project>
+      <Name>UIComponents</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

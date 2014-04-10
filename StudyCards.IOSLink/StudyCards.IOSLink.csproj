@@ -35,9 +35,52 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
+    <Reference Include="Mono.Data.Sqlite" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Presenters\" />
+    <Folder Include="Views\" />
+    <Folder Include="Persistence\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="..\StudyCards.Mobile\Presenters\DesksPresenter.cs">
+      <Link>Presenters\DesksPresenter.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\Views\IDesksView.cs">
+      <Link>Views\IDesksView.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\ApplicationEnviroment.cs">
+      <Link>ApplicationEnviroment.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\Desk.cs">
+      <Link>Desk.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\EnviromentDirectories.cs">
+      <Link>EnviromentDirectories.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\Views\IDeskEditorView.cs">
+      <Link>Views\IDeskEditorView.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\Presenters\DeskEditorPresenter.cs">
+      <Link>Presenters\DeskEditorPresenter.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\PersistenceDefaultValues.cs">
+      <Link>PersistenceDefaultValues.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\Persistence\DataBaseUpdater.cs">
+      <Link>Persistence\DataBaseUpdater.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\Persistence\DBEnviroment.cs">
+      <Link>Persistence\DBEnviroment.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\Persistence\Desk_DB.cs">
+      <Link>Persistence\Desk_DB.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\Persistence\SQLiteLinker.cs">
+      <Link>Persistence\SQLiteLinker.cs</Link>
+    </Compile>
+  </ItemGroup>
 </Project>

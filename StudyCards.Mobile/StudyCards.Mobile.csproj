@@ -30,12 +30,29 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="Mono.Data.Sqlite" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MyClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EnviromentDirectories.cs" />
     <Compile Include="ApplicationEnviroment.cs" />
+    <Compile Include="Views\IDesksView.cs" />
+    <Compile Include="Presenters\DesksPresenter.cs" />
+    <Compile Include="Desk.cs" />
+    <Compile Include="Persistence\DBEnviroment.cs" />
+    <Compile Include="Persistence\SQLiteLinker.cs" />
+    <Compile Include="Persistence\DataBaseUpdater.cs" />
+    <Compile Include="PersistenceDefaultValues.cs" />
+    <Compile Include="Persistence\Desk_DB.cs" />
+    <Compile Include="Views\IDeskEditorView.cs" />
+    <Compile Include="Presenters\DeskEditorPresenter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Presenters\" />
+    <Folder Include="Views\" />
+    <Folder Include="Persistence\" />
+  </ItemGroup>
 </Project>
