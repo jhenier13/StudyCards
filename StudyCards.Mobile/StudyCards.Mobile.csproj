@@ -32,6 +32,7 @@
     <Reference Include="System" />
     <Reference Include="Mono.Data.Sqlite" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MyClass.cs" />
@@ -48,11 +49,22 @@
     <Compile Include="Persistence\Desk_DB.cs" />
     <Compile Include="Views\IDeskEditorView.cs" />
     <Compile Include="Presenters\DeskEditorPresenter.cs" />
+    <Compile Include="Views\IDeskViewerView.cs" />
+    <Compile Include="Presenters\DeskViewerPresenter.cs" />
+    <Compile Include="IParsableObject.cs" />
+    <Compile Include="DrawingElement.cs" />
+    <Compile Include="Template.cs" />
+    <Compile Include="Background.cs" />
+    <Compile Include="TemplatesManager.cs" />
+    <Compile Include="IDeviceResourcesManager.cs" />
+    <Compile Include="BackgroundsManager.cs" />
+    <Compile Include="Utils\XmlUtils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Presenters\" />
     <Folder Include="Views\" />
     <Folder Include="Persistence\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
 </Project>

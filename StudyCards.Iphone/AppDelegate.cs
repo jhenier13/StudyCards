@@ -4,6 +4,7 @@ using System.Linq;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using StudyCards.Mobile.Persistence;
+using StudyCards.Mobile;
 
 namespace StudyCards.Iphone
 {
@@ -26,6 +27,16 @@ namespace StudyCards.Iphone
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             DataBaseUpdater.TryCreateDataBase();
+
+            IphoneResourcesManager iphoneResources = new IphoneResourcesManager();
+            BackgroundsManager.ResourcesManager = iphoneResources;
+            TemplatesManager.ResourcesManager = iphoneResources;
+
+            BackgroundsManager.CopyDefaultBackgroundsToLibrary();
+            TemplatesManager.CopyDefaultTemplatesToLibrary();
+
+            BackgroundsManager.LoadBackgrounds();
+            TemplatesManager.LoadTemplates();
 
             window = new UIWindow(UIScreen.MainScreen.Bounds);
 			

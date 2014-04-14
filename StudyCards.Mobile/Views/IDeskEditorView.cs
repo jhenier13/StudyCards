@@ -6,11 +6,11 @@ namespace StudyCards.Mobile.Views
     {
         string Name { get; set; }
 
-        string CardFrontTemplate{ get; set; }
+        Template CardFrontTemplate{ get; set; }
 
-        string CardBackTemplate{ get; set; }
+        Template CardBackTemplate{ get; set; }
 
-        string Background { get; set; }
+        Background CardsBackground { get; set; }
     }
 }
 

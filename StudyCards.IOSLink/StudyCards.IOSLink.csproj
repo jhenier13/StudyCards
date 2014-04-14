@@ -43,6 +43,7 @@
     <Folder Include="Presenters\" />
     <Folder Include="Views\" />
     <Folder Include="Persistence\" />
+    <Folder Include="Utils\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -81,6 +82,36 @@
     </Compile>
     <Compile Include="..\StudyCards.Mobile\Persistence\SQLiteLinker.cs">
       <Link>Persistence\SQLiteLinker.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\Views\IDeskViewerView.cs">
+      <Link>Views\IDeskViewerView.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\Presenters\DeskViewerPresenter.cs">
+      <Link>Presenters\DeskViewerPresenter.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\Background.cs">
+      <Link>Background.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\BackgroundsManager.cs">
+      <Link>BackgroundsManager.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\DrawingElement.cs">
+      <Link>DrawingElement.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\IDeviceResourcesManager.cs">
+      <Link>IDeviceResourcesManager.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\IParsableObject.cs">
+      <Link>IParsableObject.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\Template.cs">
+      <Link>Template.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\TemplatesManager.cs">
+      <Link>TemplatesManager.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\Utils\XmlUtils.cs">
+      <Link>Utils\XmlUtils.cs</Link>
     </Compile>
   </ItemGroup>
 </Project>

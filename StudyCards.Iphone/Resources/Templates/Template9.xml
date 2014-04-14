@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Template Name="Title and Description 2">
-	<Content>
+	<Content Width="480" Height="320">
 		<Line ID="Line1" Position="5,5" Size="470,40" Content="" FontFamily="Arial" IsBold="True" Color="Black" FontSize="20" Alignment="Center" />
 		<Text ID="Text1" Position="5,50" Size="470,185" Content="" FontFamily="Arial" Color="Black" FontSize="15" />
 	</Content>

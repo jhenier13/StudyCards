@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Drawing;
 using MonoTouch.UIKit;
+using StudyCards.Mobile;
+using StudyCards.Mobile.Presenters;
 using StudyCards.Mobile.Views;
 using UIComponents.Frames;
-using StudyCards.Mobile.Presenters;
-using System.Drawing;
+using StudyCards.Iphone.HelpViews;
 
 namespace StudyCards.Iphone
 {
@@ -11,6 +13,9 @@ namespace StudyCards.Iphone
     {
         //Attributes
         private DeskEditorPresenter __presenter;
+        private Template __frontTemplate;
+        private Template __backTemplate;
+        private Background __cardsBackground;
         //UIControls
         private GridView __innerFrame;
         private UILabel __nameLabel;
@@ -18,9 +23,9 @@ namespace StudyCards.Iphone
         private UILabel __cardBackTemplateLabel;
         private UILabel __backgroundLabel;
         private UITextField __name;
-        private UITextField __cardFrontTemplate;
-        private UITextField __cardBackTemplate;
-        private UITextField __background;
+        private UIButton __cardFrontTemplate;
+        private UIButton __cardBackTemplate;
+        private UIButton __background;
         private UIBarButtonItem __done;
         private UIBarButtonItem __cancel;
 
@@ -36,39 +41,45 @@ namespace StudyCards.Iphone
             }
         }
 
-        public string CardFrontTemplate
+        public Template CardFrontTemplate
         {
             get
             {
-                return __cardFrontTemplate.Text;
+                return __frontTemplate;
             }
             set
             {
-                __cardFrontTemplate.Text = value;
+                __frontTemplate = value;
+                __cardFrontTemplate.SetTitle(value.Name, UIControlState.Normal);
+                __cardFrontTemplate.ImageEdgeInsets = new UIEdgeInsets(2, __cardFrontTemplate.Frame.Width - 20, 2, 0);
             }
         }
 
-        public string CardBackTemplate
+        public Template CardBackTemplate
         {
             get
             {
-                return __cardBackTemplate.Text;
+                return __backTemplate;
             }
             set
             {
-                __cardBackTemplate.Text = value;
+                __backTemplate = value;
+                __cardBackTemplate.SetTitle(value.Name, UIControlState.Normal);
+                __cardBackTemplate.ImageEdgeInsets = new UIEdgeInsets(2, __cardBackTemplate.Frame.Width - 20, 2, 0);
             }
         }
 
-        public string Background
+        public Background CardsBackground
         {
             get
             {
-                return __background.Text;
+                return __cardsBackground;
             }
             set
             {
-                __background.Text = value;
+                __cardsBackground = value;
+                __background.SetTitle(value.Name, UIControlState.Normal);
+                __background.ImageEdgeInsets = new UIEdgeInsets(2, __background.Frame.Width - 20, 2, 0);
             }
         }
 
@@ -78,6 +89,18 @@ namespace StudyCards.Iphone
             this.View.BackgroundColor = UIColor.White;
             this.NavigationItem.HidesBackButton = true;
             this.EdgesForExtendedLayout = UIRectEdge.None;
+
+            this.Title = "Create desk";
+        }
+
+        public DeskEditorView(Desk desk)
+        {
+            __presenter = new DeskEditorPresenter(this, desk);
+            this.View.BackgroundColor = UIColor.White;
+            this.NavigationItem.HidesBackButton = true;
+            this.EdgesForExtendedLayout = UIRectEdge.None;
+
+            this.Title = string.Format("Edit {0}", desk.Name);
         }
 
         public override void LoadView()
@@ -138,14 +161,17 @@ namespace StudyCards.Iphone
             __name = new UITextField();
             __name.BorderStyle = UITextBorderStyle.RoundedRect;
 
-            __cardBackTemplate = new UITextField();
-            __cardBackTemplate.BorderStyle = UITextBorderStyle.RoundedRect;
+            __cardBackTemplate = new UIButton(UIButtonType.DetailDisclosure);
+            __cardBackTemplate.SetImage(UIImage.FromFile("DetailDisclosureIcon.png"), UIControlState.Normal);
+            __cardBackTemplate.TouchDown += this.CardBackTemplate_TouchDown;
 
-            __cardFrontTemplate = new UITextField();
-            __cardFrontTemplate.BorderStyle = UITextBorderStyle.RoundedRect;
+            __cardFrontTemplate = new UIButton(UIButtonType.DetailDisclosure);
+            __cardFrontTemplate.SetImage(UIImage.FromFile("DetailDisclosureIcon.png"), UIControlState.Normal);
+            __cardFrontTemplate.TouchDown += this.CardFrontTemplate_TouchDown;
 
-            __background = new UITextField();
-            __background.BorderStyle = UITextBorderStyle.RoundedRect;
+            __background = new UIButton(UIButtonType.DetailDisclosure);
+            __background.SetImage(UIImage.FromFile("DetailDisclosureIcon.png"), UIControlState.Normal);
+            __background.TouchDown += this.Background_TouchDown;
 
             __done = new UIBarButtonItem(UIBarButtonSystemItem.Done);
             __done.Clicked += this.Done_Click;
@@ -178,6 +204,45 @@ namespace StudyCards.Iphone
         private void Cancel_Click(object sender, EventArgs e)
         {
             this.NavigationController.PopViewControllerAnimated(true);
+        }
+
+        private void CardFrontTemplate_TouchDown(object sender, EventArgs e)
+        {
+            TemplateDialog templateSelection = new TemplateDialog(this.CardFrontTemplate);
+            templateSelection.SelectionChanged += this.CardFrontTemplateSelectorDialog_SelectionChanged;
+            this.NavigationController.PushViewController(templateSelection, true);
+        }
+
+        private void CardBackTemplate_TouchDown(object sender, EventArgs e)
+        {
+            TemplateDialog templateSelection = new TemplateDialog(this.CardBackTemplate);
+            templateSelection.SelectionChanged += this.CardBackTemplateSelectorDialog_SelectionChanged;
+            this.NavigationController.PushViewController(templateSelection, true);
+        }
+
+        private void Background_TouchDown(object sender, EventArgs e)
+        {
+            BackgroundDialog backgroundSelection = new BackgroundDialog(this.CardsBackground);
+            backgroundSelection.SelectionChanged += this.BackgroundSelectorDialog_SelectionChanged;
+            this.NavigationController.PushViewController(backgroundSelection, true);
+        }
+
+        private void CardBackTemplateSelectorDialog_SelectionChanged(object sender, EventArgs e)
+        {
+            TemplateDialog dialog = sender as TemplateDialog;
+            __presenter.SetCardBackTemplate(dialog.SelectedTemplate);
+        }
+
+        private void CardFrontTemplateSelectorDialog_SelectionChanged(object sender, EventArgs e)
+        {
+            TemplateDialog dialog = sender as TemplateDialog;
+            __presenter.SetCardFrontTemplate(dialog.SelectedTemplate);
+        }
+
+        private void BackgroundSelectorDialog_SelectionChanged(object sender, EventArgs e)
+        {
+            BackgroundDialog dialog = sender as BackgroundDialog;
+            __presenter.SetBackground(dialog.SelectedBackground);
         }
     }
 }

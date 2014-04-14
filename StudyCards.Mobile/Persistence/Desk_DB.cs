@@ -56,8 +56,8 @@ namespace StudyCards.Mobile
         private void Update()
         {
             string updateQuery = string.Format("UPDATE {0} SET {3}='{4}',{5}='{6}',{7}='{8}',{9}='{10}' WHERE {1}={2}",
-                                     TABLE_NAME, ID, this.Id, NAME, SQLiteLinker.FixSQLInjection(this.Name), CARD_FRONT_TEMPLATE, this.CardFrontTemplate,
-                                     CARD_BACK_TEMPLATE, this.CardBackTemplate, BACKGROUND, this.Background);
+                                     TABLE_NAME, ID, this.Id, NAME, SQLiteLinker.FixSQLInjection(this.Name), CARD_FRONT_TEMPLATE, this.CardFrontTemplateName,
+                                     CARD_BACK_TEMPLATE, this.CardBackTemplateName, BACKGROUND, this.BackgroundName);
 
             SQLiteLinker.ExecuteQuery(updateQuery);
         }
@@ -66,8 +66,8 @@ namespace StudyCards.Mobile
         {
             this.Id = this.GetNewId();
             string insertQuery = string.Format("INSERT INTO {0}({1},{3},{5},{7},{9}) VALUES ({2},'{4}','{6}','{8}','{10}')",
-                                     TABLE_NAME, ID, this.Id, NAME, SQLiteLinker.FixSQLInjection(this.Name), CARD_BACK_TEMPLATE, this.CardBackTemplate,
-                                     CARD_FRONT_TEMPLATE, this.CardFrontTemplate, BACKGROUND, this.Background);
+                                     TABLE_NAME, ID, this.Id, NAME, SQLiteLinker.FixSQLInjection(this.Name), CARD_BACK_TEMPLATE, this.CardBackTemplateName,
+                                     CARD_FRONT_TEMPLATE, this.CardFrontTemplateName, BACKGROUND, this.BackgroundName);
 
             SQLiteLinker.ExecuteQuery(insertQuery);
         }
@@ -76,9 +76,9 @@ namespace StudyCards.Mobile
         {
             this.Id = Convert.ToInt32(data[ID]);
             this.Name = Convert.ToString(data[NAME]);
-            this.CardFrontTemplate = Convert.ToString(data[CARD_FRONT_TEMPLATE]);
-            this.CardBackTemplate = Convert.ToString(data[CARD_BACK_TEMPLATE]);
-            this.Background = Convert.ToString(data[BACKGROUND]);
+            this.CardFrontTemplateName = Convert.ToString(data[CARD_FRONT_TEMPLATE]);
+            this.CardBackTemplateName = Convert.ToString(data[CARD_BACK_TEMPLATE]);
+            this.BackgroundName = Convert.ToString(data[BACKGROUND]);
         }
 
         private int GetNewId()

@@ -13,6 +13,7 @@ namespace StudyCards.Iphone
         private string __cellIdentifier = "DeskCell";
 
         public event DeleteRowEventHandler RowDeleted;
+        public event SelectRowEventHandler RowHasBeenSelected;
 
         public DesksTableSource(IList<Desk> items)
         {
@@ -60,6 +61,14 @@ namespace StudyCards.Iphone
                 default:
                     break;
             }
+        }
+
+        public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
+        {
+            var handler = this.RowHasBeenSelected;
+
+            if (handler != null)
+                handler(this, new SelectRowEventArgs(){ SelectedIndex = indexPath.Row });
         }
     }
 }

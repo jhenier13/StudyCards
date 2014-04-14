@@ -93,17 +93,26 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Default-568h%402x.png" />
-    <BundleResource Include="Resources\DefaultTemplates\Template1.xml" />
-    <BundleResource Include="Resources\DefaultTemplates\Template2.xml" />
-    <BundleResource Include="Resources\DefaultTemplates\Template3.xml" />
-    <BundleResource Include="Resources\DefaultTemplates\Template4.xml" />
-    <BundleResource Include="Resources\DefaultTemplates\Template5.xml" />
-    <BundleResource Include="Resources\DefaultTemplates\Template6.xml" />
-    <BundleResource Include="Resources\DefaultTemplates\Template7.xml" />
-    <BundleResource Include="Resources\DefaultTemplates\Template8.xml" />
-    <BundleResource Include="Resources\DefaultTemplates\Template9.xml" />
-    <BundleResource Include="Resources\DefaultTemplates\Template10.xml" />
-    <BundleResource Include="Resources\DefaultTemplates\Template11.xml" />
+    <BundleResource Include="Resources\Templates\Template1.xml" />
+    <BundleResource Include="Resources\Templates\Template2.xml" />
+    <BundleResource Include="Resources\Templates\Template3.xml" />
+    <BundleResource Include="Resources\Templates\Template4.xml" />
+    <BundleResource Include="Resources\Templates\Template5.xml" />
+    <BundleResource Include="Resources\Templates\Template6.xml" />
+    <BundleResource Include="Resources\Templates\Template7.xml" />
+    <BundleResource Include="Resources\Templates\Template8.xml" />
+    <BundleResource Include="Resources\Templates\Template9.xml" />
+    <BundleResource Include="Resources\Templates\Template10.xml" />
+    <BundleResource Include="Resources\Templates\Template11.xml" />
+    <BundleResource Include="Resources\Backgrounds\Abstract Tree.png" />
+    <BundleResource Include="Resources\Backgrounds\Antique.png" />
+    <BundleResource Include="Resources\Backgrounds\CC.png" />
+    <BundleResource Include="Resources\Backgrounds\Dark Blue.png" />
+    <BundleResource Include="Resources\Backgrounds\Lelouch x CC 1.png" />
+    <BundleResource Include="Resources\Backgrounds\Lelouch x CC 2.png" />
+    <BundleResource Include="Resources\Backgrounds\Lelouch x CC 3.png" />
+    <BundleResource Include="Resources\Backgrounds\Light Wooden.png" />
+    <BundleResource Include="Resources\DetailDisclosureIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -116,10 +125,20 @@
     <Compile Include="DesksView.cs" />
     <Compile Include="DesksTableSource.cs" />
     <Compile Include="DeskEditorView.cs" />
+    <Compile Include="DeskViewerView.cs" />
+    <Compile Include="IphoneResourcesManager.cs" />
+    <Compile Include="HelpViews\TemplateDialog.cs" />
+    <Compile Include="HelpViews\BackgroundDialog.cs" />
+    <Compile Include="HelpViews\TemplatesViewSource.cs" />
+    <Compile Include="HelpViews\BackgroundsViewSource.cs" />
+    <Compile Include="SubViews\UICardView.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Folder Include="Resources\DefaultTemplates\" />
+    <Folder Include="Resources\Backgrounds\" />
+    <Folder Include="Resources\Templates\" />
+    <Folder Include="HelpViews\" />
+    <Folder Include="SubViews\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StudyCards.IOSLink\StudyCards.IOSLink.csproj">

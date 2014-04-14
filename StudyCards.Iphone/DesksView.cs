@@ -34,6 +34,7 @@ namespace StudyCards.Iphone
                 __desks = value;
                 __desksSource = new DesksTableSource(__desks);
                 __desksSource.RowDeleted += this.DesksSource_RowDeleted;
+                __desksSource.RowHasBeenSelected += this.DesksSource_RowSelected;
                 __table.Source = __desksSource;
             }
         }
@@ -124,6 +125,13 @@ namespace StudyCards.Iphone
         private void DesksSource_RowDeleted(object sender, DeleteRowEventArgs e)
         {
             __presenter.DeleteDesk(e.DeleteIndex);
+        }
+
+        private void DesksSource_RowSelected(object sender, SelectRowEventArgs e)
+        {
+            Desk selectedDesk = __desks[e.SelectedIndex];
+            DeskViewerView deskViewer = new DeskViewerView(selectedDesk);
+            this.NavigationController.PushViewController(deskViewer, true);
         }
     }
 }

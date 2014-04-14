@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Template Name="Web Link">
-	<Content>
+	<Content Width="480" Height="320">
 		<Link ID="Link1" Position="5,5" Size="470,310" Label="" WebLink="" FontSize="16" Alignment="Center" />
 	</Content>
 </Template>
