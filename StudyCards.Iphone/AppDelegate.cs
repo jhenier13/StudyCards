@@ -5,6 +5,8 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using StudyCards.Mobile.Persistence;
 using StudyCards.Mobile;
+using StudyCards.Mobile.DrawingElements;
+using System.IO;
 
 namespace StudyCards.Iphone
 {
@@ -38,6 +40,11 @@ namespace StudyCards.Iphone
             BackgroundsManager.LoadBackgrounds();
             TemplatesManager.LoadTemplates();
 
+            DirectoryInfo tempDir = new DirectoryInfo(EnviromentDirectories.IOS_TEMP_DIRECTORY);
+
+            foreach (FileInfo tempFile in tempDir.GetFiles())
+                tempFile.Delete();
+
             window = new UIWindow(UIScreen.MainScreen.Bounds);
 			
             __viewController = new CustomNavigationController();
@@ -45,6 +52,14 @@ namespace StudyCards.Iphone
             window.MakeKeyAndVisible();
 			
             return true;
+        }
+
+        public override void WillTerminate(UIApplication application)
+        {
+            DirectoryInfo tempDir = new DirectoryInfo(EnviromentDirectories.IOS_TEMP_DIRECTORY);
+
+            foreach (FileInfo tempFile in tempDir.GetFiles())
+                tempFile.Delete();
         }
     }
 }

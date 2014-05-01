@@ -83,6 +83,11 @@ namespace StudyCards.Mobile
             }
         }
 
+        public static void SaveTemplate(Template template)
+        {
+            throw new NotImplementedException("Check that the template is already in the list");
+        }
+
         public static Template TemplateByName(string name)
         {
             LoadTemplatesNames();

@@ -66,6 +66,11 @@ namespace StudyCards.Mobile.Presenters
             __desk.SetBackground(background);
             __view.CardsBackground = background;
         }
+
+        public void CommitName()
+        {
+            __desk.Name = __view.Name;
+        }
     }
 }
 

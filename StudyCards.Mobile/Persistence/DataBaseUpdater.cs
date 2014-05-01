@@ -14,14 +14,15 @@ namespace StudyCards.Mobile.Persistence
                                                  CardBackTemplate   VARCHAR,
                                                  Background         VARCHAR
                                                  )";
-//        private static string SHAKEITEM_SCHEMA = @"CREATE TABLE ShakeItems (
-//                                                 ItemID             INTEGER     PRIMARY KEY     NOT NULL,
-//                                                 ListID             INTEGER,
-//                                                 Name               VARCHAR,
-//                                                 ItemIndex              INTEGER,
-//                                                 IsLocked           INTEGER,
-//                                                 IsMarked           INTEGER
-//                                                 )";
+        private static string CARD_SCHEMA = @"CREATE TABLE Cards (
+                                                CardID              INTEGER     PRIMARY KEY     NOT NULL,
+                                                DeskID              INTEGER,
+                                                CardIndex           INTEGER,
+                                                FrontTemplate       VARCHAR,
+                                                FrontValues         VARCHAR,
+                                                BackTemplate        VARCHAR,
+                                                BackValues          VARCHAR
+                                                )";
         private static string APPLICATION_SCHEMA = @"CREATE TABLE Application (
                                                    Version      VARCHAR
                                                    )";
@@ -41,6 +42,7 @@ namespace StudyCards.Mobile.Persistence
         private static void CreateDataBaseSchema()
         {
             SQLiteLinker.ExecuteQuery(DESK_SCHEMA);
+            SQLiteLinker.ExecuteQuery(CARD_SCHEMA);
             SQLiteLinker.ExecuteQuery(APPLICATION_SCHEMA);
 
             string insertVersionQuery = string.Format("INSERT INTO Application(Version) VALUES (\'{0}\')", "1.0.0");

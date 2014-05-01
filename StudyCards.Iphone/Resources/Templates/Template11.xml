@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<Template Name="Title and Description 2">
+<Template Name="Description and Link">
 	<Content  Width="480" Height="320">
 		<Text ID="Text1" Position="5,5" Size="470,195" Content="" FontFamily="Arial" Color="Black" FontSize="15" />
 		<Link ID="Link1" Position="5,200" Size="470,30" Label="" WebLink="" FontSize="16" Alignment="Center" />

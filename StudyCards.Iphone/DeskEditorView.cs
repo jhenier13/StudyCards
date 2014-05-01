@@ -11,6 +11,8 @@ namespace StudyCards.Iphone
 {
     public class DeskEditorView : UIViewController, IDeskEditorView
     {
+        //Flags
+        private bool __layoutInitialized = false;
         //Attributes
         private DeskEditorPresenter __presenter;
         private Template __frontTemplate;
@@ -100,7 +102,7 @@ namespace StudyCards.Iphone
             this.NavigationItem.HidesBackButton = true;
             this.EdgesForExtendedLayout = UIRectEdge.None;
 
-            this.Title = string.Format("Edit {0}", desk.Name);
+            this.Title = string.Format("Edit \"{0}\"", desk.Name);
         }
 
         public override void LoadView()
@@ -121,10 +123,19 @@ namespace StudyCards.Iphone
         {
             base.ViewWillAppear(animated);
 
-            __innerFrame.Frame = new RectangleF(0, 0, this.View.Frame.Width, this.View.Frame.Height);
-            __innerFrame.UpdateChildrenLayout();
+            if (!__layoutInitialized)
+            {
+                this.UpdateLayout();
+                __layoutInitialized = true;
+            }
 
             __presenter.LoadData();
+        }
+
+        public void UpdateLayout()
+        {
+            __innerFrame.Frame = new RectangleF(0, 0, this.View.Frame.Width, this.View.Frame.Height);
+            __innerFrame.UpdateChildrenLayout();
         }
 
         public override void TouchesBegan(MonoTouch.Foundation.NSSet touches, UIEvent evt)
@@ -140,7 +151,7 @@ namespace StudyCards.Iphone
         private void CreateGrid()
         {
             __innerFrame = new GridView();
-            __innerFrame.AddRowsAndColumns("30;30;30;30;1.0*", "15;0.35*;0.65*;15");
+            __innerFrame.AddRowsAndColumns("15;30;30;30;30;1.0*", "15;0.35*;0.65*;15");
             __innerFrame.Frame = new RectangleF(0, 0, this.View.Frame.Width, this.View.Frame.Height);
         }
 
@@ -150,15 +161,19 @@ namespace StudyCards.Iphone
             __nameLabel.Text = "Name";
 
             __cardBackTemplateLabel = new UILabel();
+            __cardBackTemplateLabel.AdjustsFontSizeToFitWidth = true;
             __cardBackTemplateLabel.Text = "Cards back template";
 
             __cardFrontTemplateLabel = new UILabel();
+            __cardFrontTemplateLabel.AdjustsFontSizeToFitWidth = true;
             __cardFrontTemplateLabel.Text = "Cards front template";
 
             __backgroundLabel = new UILabel();
+            __backgroundLabel.AdjustsFontSizeToFitWidth = true;
             __backgroundLabel.Text = "Background";
 
             __name = new UITextField();
+            __name.Placeholder = "Desk name";
             __name.BorderStyle = UITextBorderStyle.RoundedRect;
 
             __cardBackTemplate = new UIButton(UIButtonType.DetailDisclosure);
@@ -181,14 +196,14 @@ namespace StudyCards.Iphone
 
         private void AddUIControls()
         {
-            __innerFrame.AddChild(__nameLabel, 0, 1);
-            __innerFrame.AddChild(__cardFrontTemplateLabel, 1, 1);
-            __innerFrame.AddChild(__cardBackTemplateLabel, 2, 1);
-            __innerFrame.AddChild(__backgroundLabel, 3, 1);
-            __innerFrame.AddChild(__name, 0, 2, new SubViewThickness(3));
-            __innerFrame.AddChild(__cardFrontTemplate, 1, 2, new SubViewThickness(3));
-            __innerFrame.AddChild(__cardBackTemplate, 2, 2, new SubViewThickness(3));
-            __innerFrame.AddChild(__background, 3, 2, new SubViewThickness(3));
+//            __innerFrame.AddChild(__nameLabel, 0, 1);
+            __innerFrame.AddChild(__cardFrontTemplateLabel, 2, 1);
+            __innerFrame.AddChild(__cardBackTemplateLabel, 3, 1);
+            __innerFrame.AddChild(__backgroundLabel, 4, 1);
+            __innerFrame.AddChild(__name, 1, 1, 1, 2, true, true, GridHorizontalAlignment.Stretch, GridVerticalAlignment.Stretch, new SubViewThickness(3));
+            __innerFrame.AddChild(__cardFrontTemplate, 2, 2, new SubViewThickness(3));
+            __innerFrame.AddChild(__cardBackTemplate, 3, 2, new SubViewThickness(3));
+            __innerFrame.AddChild(__background, 4, 2, new SubViewThickness(3));
 
             this.NavigationItem.RightBarButtonItem = __cancel;
             this.NavigationItem.LeftBarButtonItem = __done;
@@ -208,6 +223,7 @@ namespace StudyCards.Iphone
 
         private void CardFrontTemplate_TouchDown(object sender, EventArgs e)
         {
+            __presenter.CommitName();
             TemplateDialog templateSelection = new TemplateDialog(this.CardFrontTemplate);
             templateSelection.SelectionChanged += this.CardFrontTemplateSelectorDialog_SelectionChanged;
             this.NavigationController.PushViewController(templateSelection, true);
@@ -215,6 +231,7 @@ namespace StudyCards.Iphone
 
         private void CardBackTemplate_TouchDown(object sender, EventArgs e)
         {
+            __presenter.CommitName();
             TemplateDialog templateSelection = new TemplateDialog(this.CardBackTemplate);
             templateSelection.SelectionChanged += this.CardBackTemplateSelectorDialog_SelectionChanged;
             this.NavigationController.PushViewController(templateSelection, true);
@@ -222,6 +239,7 @@ namespace StudyCards.Iphone
 
         private void Background_TouchDown(object sender, EventArgs e)
         {
+            __presenter.CommitName();
             BackgroundDialog backgroundSelection = new BackgroundDialog(this.CardsBackground);
             backgroundSelection.SelectionChanged += this.BackgroundSelectorDialog_SelectionChanged;
             this.NavigationController.PushViewController(backgroundSelection, true);

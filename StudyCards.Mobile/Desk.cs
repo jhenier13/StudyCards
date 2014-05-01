@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace StudyCards.Mobile
 {
     public partial class Desk
     {
+        private bool __cardsLoaded = false;
         private int _id;
         private string _name;
         private string _cardFrontTemplate;
         private string _cardBackTemplate;
         private string _background;
+        private List<Card> _cards;
 
         public int Id { get { return _id; } internal set { _id = value; } }
 
@@ -21,6 +24,8 @@ namespace StudyCards.Mobile
 
         public string BackgroundName { get { return _background; } internal set { _background = value; } }
 
+        public ReadOnlyCollection<Card> Cards { get; private set; }
+
         public Desk()
         {
             this.Id = PersistenceDefaultValues.NO_IDENTIFIED;
@@ -28,6 +33,9 @@ namespace StudyCards.Mobile
             this.CardBackTemplateName = string.Empty;
             this.CardFrontTemplateName = string.Empty;
             this.BackgroundName = string.Empty;
+
+            _cards = new List<Card>();
+            this.Cards = _cards.AsReadOnly();
         }
 
         public Template GetCardFrontTemplate()
@@ -61,6 +69,58 @@ namespace StudyCards.Mobile
         public void SetBackground(Background background)
         {
             this.BackgroundName = background.Name;
+        }
+
+        public void LoadCards()
+        {
+            if (__cardsLoaded)
+                return;
+
+            _cards.Clear();
+            List<Card> deskCards = Card.GetCards(this.Id);
+            _cards.AddRange(deskCards);
+            __cardsLoaded = true;
+        }
+
+        public Card CreateCard()
+        {
+            Card newDeskCard = new Card();
+
+            Template backTemplate = this.GetCardBackTemplate();
+            backTemplate.LoadTemplate();
+            newDeskCard.LoadTemplateInBack(backTemplate);
+
+            Template frontTemplate = this.GetCardFrontTemplate();
+            frontTemplate.LoadTemplate();
+            newDeskCard.LoadTemplateInFront(frontTemplate);
+
+            return newDeskCard;
+        }
+
+        public void AddCard(Card newCard, int index)
+        {
+            if (newCard == null || index < 0)
+                return;
+
+            //In case the card is already registered, we change the id so is considered like a new one (will be inserted)
+            newCard.Id = PersistenceDefaultValues.NO_IDENTIFIED;
+            newCard.DeskId = this.Id;
+            int realIndex = (index > _cards.Count) ? _cards.Count : index;
+            newCard.Index = realIndex;
+
+            newCard.Save();
+            _cards.Insert(realIndex, newCard);
+
+            this.RefreshCardsIndexes();
+        }
+
+        private void RefreshCardsIndexes()
+        {
+            for (int i = 0; i < this.Cards.Count; i++)
+            {
+                this.Cards[i].Index = i;
+//                this.Cards[i].SaveIndex();
+            }
         }
     }
 }

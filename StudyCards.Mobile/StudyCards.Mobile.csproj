@@ -52,13 +52,32 @@
     <Compile Include="Views\IDeskViewerView.cs" />
     <Compile Include="Presenters\DeskViewerPresenter.cs" />
     <Compile Include="IParsableObject.cs" />
-    <Compile Include="DrawingElement.cs" />
     <Compile Include="Template.cs" />
     <Compile Include="Background.cs" />
     <Compile Include="TemplatesManager.cs" />
     <Compile Include="IDeviceResourcesManager.cs" />
     <Compile Include="BackgroundsManager.cs" />
     <Compile Include="Utils\XmlUtils.cs" />
+    <Compile Include="Card.cs" />
+    <Compile Include="Persistence\Card_DB.cs" />
+    <Compile Include="Views\ICardEditorView.cs" />
+    <Compile Include="Presenters\CardEditorPresenter.cs" />
+    <Compile Include="DrawingElements\LineElement.cs" />
+    <Compile Include="DrawingElements\TextElement.cs" />
+    <Compile Include="DrawingElements\LinkElement.cs" />
+    <Compile Include="DrawingElements\ImageElement.cs" />
+    <Compile Include="DrawingElements\AudioElement.cs" />
+    <Compile Include="DrawingElements\VideoElement.cs" />
+    <Compile Include="DrawingElements\DrawPoint.cs" />
+    <Compile Include="DrawingElements\DrawSize.cs" />
+    <Compile Include="DrawingContent.cs" />
+    <Compile Include="DrawingElements\LineContent.cs" />
+    <Compile Include="DrawingElements\TextContent.cs" />
+    <Compile Include="DrawingElements\LinkContent.cs" />
+    <Compile Include="DrawingElements\ImageContent.cs" />
+    <Compile Include="DrawingElements\AudioContent.cs" />
+    <Compile Include="DrawingElements\VideoContent.cs" />
+    <Compile Include="TemplateElement.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -66,5 +85,6 @@
     <Folder Include="Views\" />
     <Folder Include="Persistence\" />
     <Folder Include="Utils\" />
+    <Folder Include="DrawingElements\" />
   </ItemGroup>
 </Project>

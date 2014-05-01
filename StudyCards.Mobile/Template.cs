@@ -6,34 +6,52 @@ using StudyCards.Mobile.Utils;
 
 namespace StudyCards.Mobile
 {
-    public class Template : IParsableObject
+    public class Template
     {
+        public const float WIDTH = 480.0F;
+        public const float HEIGHT = 320.0F;
+        private bool __isLoaded = false;
+
         public string Name{ get; set; }
 
         public bool IsDefault { get; internal set; }
 
         internal string Location { get; set; }
 
-        public float Width { get; set; }
-
-        public float Height { get; set; }
-
-        public List<DrawingElement> Elements{ get; private set; }
+        public List<TemplateElement> Elements{ get; private set; }
 
         public Template()
         {
             this.Name = string.Empty;
-            this.Width = 0;
-            this.Height = 0;
-            this.Elements = new List<DrawingElement>();
+            this.Elements = new List<TemplateElement>();
         }
 
-        public void Parse(string data)
+        public void LoadTemplate()
         {
-            throw new NotImplementedException();
+            if (__isLoaded)
+                return;
+
+            XmlNode node = XmlUtils.CreateNode(this.Location);
+
+            if (node == null)
+                return;
+
+            XmlNode contentNode = XmlUtils.GetChildNode(node, "Content");
+
+            this.Elements.Clear();
+
+            foreach (XmlNode element in  XmlUtils.GetNotCommentChildNodes(contentNode))
+            {
+                TemplateElement newDrawingElement = TemplateElement.CreateInstance(element.Name);
+                newDrawingElement.Parse(element.OuterXml);
+
+                this.Elements.Add(newDrawingElement);
+            }
+
+            __isLoaded = true;
         }
 
-        public string GenerateString()
+        internal void SaveTemplate()
         {
             throw new NotImplementedException();
         }

@@ -44,6 +44,7 @@
     <Folder Include="Views\" />
     <Folder Include="Persistence\" />
     <Folder Include="Utils\" />
+    <Folder Include="DrawingElements\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -95,9 +96,6 @@
     <Compile Include="..\StudyCards.Mobile\BackgroundsManager.cs">
       <Link>BackgroundsManager.cs</Link>
     </Compile>
-    <Compile Include="..\StudyCards.Mobile\DrawingElement.cs">
-      <Link>DrawingElement.cs</Link>
-    </Compile>
     <Compile Include="..\StudyCards.Mobile\IDeviceResourcesManager.cs">
       <Link>IDeviceResourcesManager.cs</Link>
     </Compile>
@@ -112,6 +110,66 @@
     </Compile>
     <Compile Include="..\StudyCards.Mobile\Utils\XmlUtils.cs">
       <Link>Utils\XmlUtils.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\Card.cs">
+      <Link>Card.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\Persistence\Card_DB.cs">
+      <Link>Persistence\Card_DB.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\Presenters\CardEditorPresenter.cs">
+      <Link>Presenters\CardEditorPresenter.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\Views\ICardEditorView.cs">
+      <Link>Views\ICardEditorView.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\DrawingElements\AudioElement.cs">
+      <Link>DrawingElements\AudioElement.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\DrawingElements\DrawPoint.cs">
+      <Link>DrawingElements\DrawPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\DrawingElements\DrawSize.cs">
+      <Link>DrawingElements\DrawSize.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\DrawingElements\ImageElement.cs">
+      <Link>DrawingElements\ImageElement.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\DrawingElements\LineElement.cs">
+      <Link>DrawingElements\LineElement.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\DrawingElements\LinkElement.cs">
+      <Link>DrawingElements\LinkElement.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\DrawingElements\TextElement.cs">
+      <Link>DrawingElements\TextElement.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\DrawingElements\VideoElement.cs">
+      <Link>DrawingElements\VideoElement.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\DrawingElements\AudioContent.cs">
+      <Link>DrawingElements\AudioContent.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\DrawingElements\ImageContent.cs">
+      <Link>DrawingElements\ImageContent.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\DrawingElements\LineContent.cs">
+      <Link>DrawingElements\LineContent.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\DrawingElements\LinkContent.cs">
+      <Link>DrawingElements\LinkContent.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\DrawingElements\TextContent.cs">
+      <Link>DrawingElements\TextContent.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\DrawingElements\VideoContent.cs">
+      <Link>DrawingElements\VideoContent.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\DrawingContent.cs">
+      <Link>DrawingContent.cs</Link>
+    </Compile>
+    <Compile Include="..\StudyCards.Mobile\TemplateElement.cs">
+      <Link>TemplateElement.cs</Link>
     </Compile>
   </ItemGroup>
 </Project>

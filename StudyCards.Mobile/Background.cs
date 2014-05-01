@@ -4,8 +4,6 @@ namespace StudyCards.Mobile
 {
     public class Background
     {
-        private string __location;
-
         public string Name { get; set; }
 
         public bool IsDefault { get; internal set; }

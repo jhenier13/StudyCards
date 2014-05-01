@@ -113,6 +113,7 @@
     <BundleResource Include="Resources\Backgrounds\Lelouch x CC 3.png" />
     <BundleResource Include="Resources\Backgrounds\Light Wooden.png" />
     <BundleResource Include="Resources\DetailDisclosureIcon.png" />
+    <BundleResource Include="Resources\ImageIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -132,6 +133,27 @@
     <Compile Include="HelpViews\TemplatesViewSource.cs" />
     <Compile Include="HelpViews\BackgroundsViewSource.cs" />
     <Compile Include="SubViews\UICardView.cs" />
+    <Compile Include="CardEditorView.cs" />
+    <Compile Include="SubViews\UICardEditorView.cs" />
+    <Compile Include="DrawingViews\LineDrawingView.cs" />
+    <Compile Include="DrawingViews\IDrawingView.cs" />
+    <Compile Include="DrawingViews\TextDrawingView.cs" />
+    <Compile Include="DrawingViews\LinkDrawingView.cs" />
+    <Compile Include="DrawingViews\ImageDrawingView.cs" />
+    <Compile Include="DrawingViews\DrawingViewFactory.cs" />
+    <Compile Include="DrawingViews\DrawingViewModalController.cs" />
+    <Compile Include="DrawingViews\LinkDrawingViewModalController.cs" />
+    <Compile Include="DrawingViews\ImageDrawingChoosePhotoController.cs" />
+    <Compile Include="DrawingViews\IDrawingViewModalController.cs" />
+    <Compile Include="DrawingViews\ImageDrawingViewModalController.cs" />
+    <Compile Include="DrawingUtils.cs" />
+    <Compile Include="DisplayViews\ImageDisplayView.cs" />
+    <Compile Include="DisplayViews\LineDisplayView.cs" />
+    <Compile Include="DisplayViews\LinkDisplayView.cs" />
+    <Compile Include="DisplayViews\TextDisplayView.cs" />
+    <Compile Include="DisplayViews\IDisplayView.cs" />
+    <Compile Include="DisplayViews\DisplayViewFactory.cs" />
+    <Compile Include="CardDisplayView.cs"/>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -139,6 +161,8 @@
     <Folder Include="Resources\Templates\" />
     <Folder Include="HelpViews\" />
     <Folder Include="SubViews\" />
+    <Folder Include="DrawingViews\" />
+    <Folder Include="DisplayViews\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StudyCards.IOSLink\StudyCards.IOSLink.csproj">
@@ -148,6 +172,10 @@
     <ProjectReference Include="..\..\LobaSoft.IOS\UIComponents\UIComponents.csproj">
       <Project>{F544C0A6-7A53-4629-B700-907342C0AF88}</Project>
       <Name>UIComponents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StudyCards.Mobile\StudyCards.Mobile.csproj">
+      <Project>{5E314789-4755-466D-A682-E59207EC6C2A}</Project>
+      <Name>StudyCards.Mobile</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

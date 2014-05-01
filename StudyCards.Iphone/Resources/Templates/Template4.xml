@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Template Name="Image">
 	<Content Width="480" Height="320">
-		<Image ID="Image1" Position="5,5" Size="470,310" Source="" Stretch="Uniform" Rotation="0" />
+		<Image ID="Image1" Position="5,5" Size="470,310" Stretch="Uniform" Rotation="0" />
 	</Content>
 </Template>

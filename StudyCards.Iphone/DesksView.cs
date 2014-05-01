@@ -11,6 +11,8 @@ namespace StudyCards.Iphone
 {
     public class DesksView : UIViewController, IDesksView
     {
+        //Flags
+        private bool __layoutInitialized = false;
         //Attributes
         private DesksPresenter __presenter;
         //UIControls
@@ -42,7 +44,6 @@ namespace StudyCards.Iphone
         public DesksView()
         {
             __presenter = new DesksPresenter(this);
-            this.View.BackgroundColor = UIColor.Blue;
             this.EdgesForExtendedLayout = UIRectEdge.None;
         }
 
@@ -63,8 +64,18 @@ namespace StudyCards.Iphone
         {
             base.ViewWillAppear(animated);
 
-            __table.Frame = new RectangleF(0, 0, this.View.Frame.Width, this.View.Frame.Height);
+            if (!__layoutInitialized)
+            {
+                this.UpdateLayout();
+                __layoutInitialized = true;
+            }
+
             __presenter.LoadData();
+        }
+
+        public void UpdateLayout()
+        {
+            __table.Frame = new RectangleF(0, 0, this.View.Frame.Width, this.View.Frame.Height);
         }
 
         private void CreateUIControls()

@@ -5,31 +5,55 @@ using StudyCards.Mobile.Presenters;
 using StudyCards.Mobile.Views;
 using StudyCards.Iphone.SubViews;
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace StudyCards.Iphone
 {
     public class DeskViewerView : UIViewController, IDeskViewerView
     {
+        private const float TOP_MARGIN = 15;
+        private const float BOTTOM_MARGIN = 15;
+        private const float LEFT_MARGIN = 15;
+        private const float RIGHT_MARGIN = 15;
+        //Flags
+        private bool __layoutInitialized = false;
         //Attributes
-        private DeskViewerPresenter __presenter;
-        private Background __deskBackground;
         private bool __requiresFullScreen;
+        private DeskViewerPresenter __presenter;
+        private int _currentIndex;
+        private int _totalCards;
         //UIControls
+        //        private CardDisplayView __cardDisplay;
         private UIBarButtonItem __options;
         private UIBarButtonItem __add;
         private UIBarButtonItem __ciclic;
         private UIBarButtonItem __previous;
         private UIBarButtonItem __next;
         private UIBarButtonItem __shuffle;
-        private UICardView __cardViewer;
 
-        public Background DeskBackground
-        {
-            get{ return __deskBackground; }
+        public Background DeskBackground{ get; set; }
+
+        public List<CardRelation> CurrentCardFrontElements { get; set; }
+
+        public List<CardRelation> CurrentCardBackElements { get; set; }
+
+        public int CurrentIndex
+        { 
+            get { return _currentIndex; }
             set
             {
-                __deskBackground = value;
-                __cardViewer.CardBackground = __deskBackground;
+                _currentIndex = value;
+                this.DrawCardsCounter();
+            }
+        }
+
+        public int TotalCards
+        { 
+            get { return _totalCards; }
+            set
+            {
+                _totalCards = value;
+                this.DrawCardsCounter();
             }
         }
 
@@ -61,10 +85,55 @@ namespace StudyCards.Iphone
         {
             base.ViewWillAppear(animated);
 
-            __cardViewer.Frame = new RectangleF(10, 10, this.View.Frame.Width - 20, this.View.Frame.Height - 20);
+            if (!__layoutInitialized)
+            {
+                this.UpdateLayout();
+                __layoutInitialized = true;
+            }
+
+            this.NavigationController.ToolbarHidden = false;
 
             __presenter.LoadData();
-            this.NavigationController.ToolbarHidden = false;
+        }
+
+        public override void ViewWillDisappear(bool animated)
+        {
+            base.ViewWillDisappear(animated);
+            this.NavigationController.ToolbarHidden = true;
+        }
+
+        public void UpdateLayout()
+        {
+        }
+
+        public void DisplayCard()
+        {
+            this.ClearSubViews();
+
+            CardDisplayView displayView = new CardDisplayView();
+            displayView.Frame = new RectangleF(LEFT_MARGIN, TOP_MARGIN, this.View.Frame.Width - LEFT_MARGIN - RIGHT_MARGIN, this.View.Frame.Height - TOP_MARGIN - BOTTOM_MARGIN);
+
+            displayView.CardBackground = this.DeskBackground;
+            displayView.FrontCardElements = this.CurrentCardFrontElements;
+            displayView.BackCardElements = this.CurrentCardBackElements;
+
+            this.Add(displayView);
+        }
+
+        public void DisplayCardLikeNext()
+        {
+        }
+
+        public void DisplayCardLikePrevious()
+        {
+        }
+
+        private void DrawCardsCounter()
+        {
+            if (this.TotalCards == 0)
+                this.Title = "None cards";
+            else
+                this.Title = string.Format("{0} of {1}", this.CurrentIndex + 1, this.TotalCards);
         }
 
         public override void TouchesBegan(MonoTouch.Foundation.NSSet touches, UIEvent evt)
@@ -89,6 +158,12 @@ namespace StudyCards.Iphone
             this.SetNeedsStatusBarAppearanceUpdate();
         }
 
+        private void ClearSubViews()
+        {
+            foreach (UIView subView in this.View.Subviews)
+                subView.RemoveFromSuperview();
+        }
+
         private void CreateUIControls()
         {
             __options = new UIBarButtonItem();
@@ -97,6 +172,7 @@ namespace StudyCards.Iphone
             __options.Clicked += this.Options_Click;
 
             __add = new UIBarButtonItem(UIBarButtonSystemItem.Add);
+            __add.Clicked += this.Add_Click;
 
             __ciclic = new UIBarButtonItem();
             __ciclic.Style = UIBarButtonItemStyle.Plain;
@@ -113,8 +189,6 @@ namespace StudyCards.Iphone
             __shuffle = new UIBarButtonItem();
             __shuffle.Style = UIBarButtonItemStyle.Plain;
             __shuffle.Title = "Shuffle";
-
-            __cardViewer = new UICardView();
         }
 
         private void AddUIControls()
@@ -126,8 +200,6 @@ namespace StudyCards.Iphone
             __dummyButton2.Width = 30;
             UIBarButtonItem __dummyButton3 = new UIBarButtonItem(UIBarButtonSystemItem.FlexibleSpace);
             this.ToolbarItems = new UIBarButtonItem[] { __ciclic, __dummyButton1, __previous, __dummyButton2, __next, __dummyButton3, __shuffle };
-
-            this.Add(__cardViewer);
         }
 
         private void Options_Click(object sender, EventArgs e)
@@ -143,6 +215,13 @@ namespace StudyCards.Iphone
             optionsSheet.Clicked += this.OptionsSheet_Clicked;
 
             optionsSheet.ShowInView(this.View);
+        }
+
+        private void Add_Click(object sender, EventArgs e)
+        {
+            this.NavigationController.ToolbarHidden = true;
+            CardEditorView editorView = new CardEditorView(__presenter.GetDesk(), __presenter.GetCurrentIndex());
+            this.NavigationController.PushViewController(editorView, true);
         }
 
         private void OptionsSheet_Clicked(object sender, UIButtonEventArgs e)
