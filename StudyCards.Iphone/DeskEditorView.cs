@@ -4,7 +4,7 @@ using MonoTouch.UIKit;
 using StudyCards.Mobile;
 using StudyCards.Mobile.Presenters;
 using StudyCards.Mobile.Views;
-using UIComponents.Frames;
+using LobaSoft.IOS.UIComponents.Frames;
 using StudyCards.Iphone.HelpViews;
 
 namespace StudyCards.Iphone
@@ -91,7 +91,6 @@ namespace StudyCards.Iphone
             this.View.BackgroundColor = UIColor.White;
             this.NavigationItem.HidesBackButton = true;
             this.EdgesForExtendedLayout = UIRectEdge.None;
-
             this.Title = "Create desk";
         }
 
@@ -101,7 +100,6 @@ namespace StudyCards.Iphone
             this.View.BackgroundColor = UIColor.White;
             this.NavigationItem.HidesBackButton = true;
             this.EdgesForExtendedLayout = UIRectEdge.None;
-
             this.Title = string.Format("Edit \"{0}\"", desk.Name);
         }
 
@@ -196,7 +194,6 @@ namespace StudyCards.Iphone
 
         private void AddUIControls()
         {
-//            __innerFrame.AddChild(__nameLabel, 0, 1);
             __innerFrame.AddChild(__cardFrontTemplateLabel, 2, 1);
             __innerFrame.AddChild(__cardBackTemplateLabel, 3, 1);
             __innerFrame.AddChild(__backgroundLabel, 4, 1);

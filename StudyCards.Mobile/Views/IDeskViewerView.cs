@@ -7,19 +7,15 @@ namespace StudyCards.Mobile.Views
     {
         Background DeskBackground { get; set; }
 
-        List<CardRelation> CurrentCardFrontElements { get; set; }
-
-        List<CardRelation> CurrentCardBackElements{ get; set; }
-
         int CurrentIndex { get; set; }
 
         int TotalCards { get; set; }
 
-        void DisplayCard();
+        bool IsSearching { get; set; }
 
-        void DisplayCardLikeNext();
+        void DisplayEmptyDesk();
 
-        void DisplayCardLikePrevious();
+        void LoadCardAt(int index);
     }
 }
 

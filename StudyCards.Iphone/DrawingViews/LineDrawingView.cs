@@ -116,7 +116,7 @@ namespace StudyCards.Iphone.DrawingViews
                 __inputFieldFrameBeforeAnimation = __inputField.Frame;
                 __needsContainerRestore = true;
 
-                UIView.Animate(0.4, new NSAction(() =>
+                UIView.Animate(DrawingViewConstants.KEYBOARD_ADJUST_ANIMATIONS_DURATION, new NSAction(() =>
                 {
                     __inputField.Frame = new RectangleF(__inputField.Frame.X, 0, __inputField.Frame.Width, __inputField.Frame.Height);
                     this.Frame = new RectangleF(this.Frame.X, this.Frame.Y - fieldRemainingMovement, this.Frame.Width, this.Frame.Height);
@@ -124,7 +124,7 @@ namespace StudyCards.Iphone.DrawingViews
             }
             else
             {
-                UIView.Animate(0.4, new NSAction(() =>
+                UIView.Animate(DrawingViewConstants.KEYBOARD_ADJUST_ANIMATIONS_DURATION, new NSAction(() =>
                 {
                     __inputField.Frame = new RectangleF(__inputField.Frame.X, fieldAdjustedYPosition, __inputField.Frame.Width, __inputField.Frame.Height);
                 }));
@@ -135,7 +135,7 @@ namespace StudyCards.Iphone.DrawingViews
         {
             if (__needsContainerRestore)
             {
-                UIView.Animate(0.4, new NSAction(() =>
+                UIView.Animate(DrawingViewConstants.KEYBOARD_ADJUST_ANIMATIONS_DURATION, new NSAction(() =>
                 {
                     __inputField.Frame = __inputFieldFrameBeforeAnimation;
                     this.Frame = __containerFrameBeforeAnimation;
@@ -146,7 +146,7 @@ namespace StudyCards.Iphone.DrawingViews
             }
             else
             {
-                UIView.Animate(0.4, new NSAction(() =>
+                UIView.Animate(DrawingViewConstants.KEYBOARD_ADJUST_ANIMATIONS_DURATION, new NSAction(() =>
                 {
                     RectangleF originalFrame = this.InputFieldProperFrame();
                     __inputField.Frame = originalFrame;

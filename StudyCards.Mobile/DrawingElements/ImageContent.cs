@@ -37,6 +37,7 @@ namespace StudyCards.Mobile.DrawingElements
         {
             string[] content = element.Split(new string []{ "||" }, 2, StringSplitOptions.None);
             this.Source = content[0];
+            __sourceToken = string.Copy(this.Source);
             this.Rotation = float.Parse(content[1]);
         }
 
@@ -55,13 +56,29 @@ namespace StudyCards.Mobile.DrawingElements
             DirectoryInfo deskImagesDirectory = new DirectoryInfo(deskImageDirectoryPath);
             deskImagesDirectory.Create();
 
-            int imagesQuantity = deskImagesDirectory.GetFiles("*.png").Length;
-            int newImageNumber = imagesQuantity + 1;
-            string newImageFileName = string.Format("{0}_{1}.png", IMAGE_FILE_NAME, newImageNumber);
-            string destinyFilePath = Path.Combine(deskImageDirectoryPath, newImageFileName);
+            if (string.IsNullOrEmpty(__sourceToken))
+            {
+                int imagesQuantity = deskImagesDirectory.GetFiles("*.png").Length;
+                int newImageNumber = imagesQuantity + 1;
+                string newImageFileName = string.Format("{0}_{1}.png", IMAGE_FILE_NAME, newImageNumber);
+                string destinyFilePath = Path.Combine(deskImageDirectoryPath, newImageFileName);
 
-            File.Move(this.Source, destinyFilePath);
-            this.Source = destinyFilePath;
+                File.Move(this.Source, destinyFilePath);
+                this.Source = destinyFilePath;
+            }
+            else
+            {
+                File.Delete(__sourceToken);
+                File.Move(this.Source, __sourceToken);
+                this.Source = __sourceToken;
+            }
+        }
+
+        internal override bool Search(string searchCriteria)
+        {
+            string tagLowerCase = this.Tag.ToLowerInvariant();
+            string search = searchCriteria.ToLowerInvariant();
+            return tagLowerCase.Contains(search);
         }
     }
 }

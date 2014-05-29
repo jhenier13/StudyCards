@@ -16,6 +16,11 @@ namespace StudyCards.Mobile
         internal virtual void CommitExtraData(object parameter)
         {
         }
+
+        internal virtual bool Search(string searchCriteria)
+        {
+            return false;
+        }
     }
 }
 

@@ -13,6 +13,7 @@ namespace StudyCards.Mobile
         private string _cardBackTemplate;
         private string _background;
         private List<Card> _cards;
+        private List<Card> _filteredCards;
 
         public int Id { get { return _id; } internal set { _id = value; } }
 
@@ -26,6 +27,8 @@ namespace StudyCards.Mobile
 
         public ReadOnlyCollection<Card> Cards { get; private set; }
 
+        public ReadOnlyCollection<Card> FilteredCards { get; private set; }
+
         public Desk()
         {
             this.Id = PersistenceDefaultValues.NO_IDENTIFIED;
@@ -36,6 +39,9 @@ namespace StudyCards.Mobile
 
             _cards = new List<Card>();
             this.Cards = _cards.AsReadOnly();
+
+            _filteredCards = new List<Card>();
+            this.FilteredCards = _filteredCards.AsReadOnly();
         }
 
         public Template GetCardFrontTemplate()
@@ -82,6 +88,23 @@ namespace StudyCards.Mobile
             __cardsLoaded = true;
         }
 
+        public void Search(string searchCriteria)
+        {
+            _filteredCards.Clear();
+
+            if (string.IsNullOrEmpty(searchCriteria))
+            {
+                _filteredCards.AddRange(_cards);
+                return;
+            }
+
+            foreach (Card singleCard in this.Cards)
+            {
+                if (singleCard.Search(searchCriteria))
+                    _filteredCards.Add(singleCard);
+            }
+        }
+
         public Card CreateCard()
         {
             Card newDeskCard = new Card();
@@ -114,12 +137,23 @@ namespace StudyCards.Mobile
             this.RefreshCardsIndexes();
         }
 
+        public void RemoveCard(int index)
+        {
+            if (index < 0 || index > this.Cards.Count)
+                return;
+
+            Card cardToRemove = _cards[index];
+            cardToRemove.Delete();
+            _cards.RemoveAt(index);
+            this.RefreshCardsIndexes();
+        }
+
         private void RefreshCardsIndexes()
         {
             for (int i = 0; i < this.Cards.Count; i++)
             {
                 this.Cards[i].Index = i;
-//                this.Cards[i].SaveIndex();
+                this.Cards[i].SaveIndex();
             }
         }
     }

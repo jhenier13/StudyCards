@@ -4,20 +4,24 @@ using StudyCards.Mobile;
 using StudyCards.Mobile.Views;
 using StudyCards.Mobile.Presenters;
 using System.Collections.Generic;
-using UIComponents.Frames;
+using LobaSoft.IOS.UIComponents.Frames;
 using StudyCards.Iphone.SubViews;
 using System.Drawing;
 using MonoTouch.Foundation;
+using LobaSoft.IOS.UIComponents;
+using StudyCards.Iphone.HelpViews;
 
 namespace StudyCards.Iphone
 {
-    public class CardEditorView : UIViewController, ICardEditorView
+    public class CardEditorView : UIViewController, ICardEditorView, IDisposableView
     {
-        //Flags
-        private bool __layoutInitialized = false;
+        private const string FRONT_TEMPLATE = "Front Template";
+        private const string BACK_TEMPLATE = "Back Template";
+        private const double TRANSITION_DURATION = 0.6;
+        private const double KEYBOARD_ADJUSTMENT_DURATION = 0.4;
         //Attributes
         private CardEditorPresenter __presenter;
-        private Background __deskBackground;
+        private UIImage __deskBackground;
         private IList<CardRelation> __frontElements;
         private IList<CardRelation> __backElements;
         //UIControls
@@ -29,8 +33,14 @@ namespace StudyCards.Iphone
         private UIBarButtonItem __done;
         private UIBarButtonItem __chooseTemplate;
         private UIBarButtonItem __cancel;
+        private UIButton __settings;
+        //Helpers UIControls
+        private UIView __statusBarBackground;
+        //Auxiliars
+        private TemplateDialog __frontTemplateDialog;
+        private TemplateDialog __backTemplateDialog;
 
-        public Background DeskBackground
+        public UIImage DeskBackground
         { 
             get { return __deskBackground; } 
             set
@@ -70,11 +80,54 @@ namespace StudyCards.Iphone
             }
         }
 
+        public Template CurrentFrontTemplate { get; set; }
+
+        public Template CurrentBackTemplate { get; set; }
+
         public CardEditorView(Desk desk, int index)
         {
             __presenter = new CardEditorPresenter(this, desk, index);
-            this.EdgesForExtendedLayout = UIRectEdge.None;
             this.View.BackgroundColor = UIColor.White;
+        }
+
+        public CardEditorView(Desk desk, Card card)
+        {
+            __presenter = new CardEditorPresenter(this, desk, card);
+            this.View.BackgroundColor = UIColor.White;
+        }
+
+        public void AttachEventHandlers()
+        {
+            __selectFront.TouchDown += this.SelectFront_TouchDown;
+            __selectBack.TouchDown += this.SelectBack_TouchDown;
+            __done.Clicked += this.Done_Click;
+            __cancel.Clicked += this.Cancel_Click;
+            __chooseTemplate.Clicked += this.ChooseTemplate_Click;
+            __settings.TouchDown += this.Settings_TouchDown;
+
+            __frontCard.ParentController = this;
+            __backCard.ParentController = this;
+        }
+
+        public void DetachEventHandlers()
+        {
+            __selectFront.TouchDown -= this.SelectFront_TouchDown;
+            __selectBack.TouchDown -= this.SelectBack_TouchDown;
+            __done.Clicked -= this.Done_Click;
+            __cancel.Clicked -= this.Cancel_Click;
+            __chooseTemplate.Clicked -= this.ChooseTemplate_Click;
+            __settings.TouchDown -= this.Settings_TouchDown;
+
+            __frontCard.ParentController = null;
+            __backCard.ParentController = null;
+        }
+
+        public void CleanSubViews()
+        {
+        }
+
+        public void AddSubViews()
+        {
         }
 
         public override void LoadView()
@@ -95,14 +148,28 @@ namespace StudyCards.Iphone
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            this.AttachEventHandlers();
+            this.UpdateLayout();
 
-            if (!__layoutInitialized)
+            if (__frontTemplateDialog != null)
             {
-                this.UpdateLayout();
-                __layoutInitialized = true;
+                __frontTemplateDialog.SelectionChanged -= this.FrontTemplateDialog_SelectionChanged;
+                __frontTemplateDialog = null;
+            }
+
+            if (__backTemplateDialog != null)
+            {
+                __backTemplateDialog.SelectionChanged -= this.BackTemplateDialog_SelectionChanged;
+                __backTemplateDialog = null;
             }
 
             __presenter.LoadData();
+        }
+
+        public override void ViewDidDisappear(bool animated)
+        {
+            base.ViewDidDisappear(animated);
+            this.DetachEventHandlers();
         }
 
         public override void TouchesBegan(NSSet touches, UIEvent evt)
@@ -111,10 +178,14 @@ namespace StudyCards.Iphone
             this.DismissKeyboard();
         }
 
-        public void UpdateLayout()
+        private void UpdateLayout()
         {
-            __innerFrame.Frame = new RectangleF(0, 0, this.View.Frame.Width, this.View.Frame.Height);
+            float navigationBarTotalHeight = IphoneEnviroment.StatusBarHeight + this.NavigationController.NavigationBar.Frame.Height;
+            __innerFrame.Frame = new RectangleF(0, navigationBarTotalHeight, this.View.Frame.Width, this.View.Frame.Height - navigationBarTotalHeight);
             __innerFrame.UpdateChildrenLayout();
+
+            __settings.Frame = new RectangleF(5, navigationBarTotalHeight, 35, 35);
+            __statusBarBackground.Frame = new RectangleF(0, 0, this.View.Frame.Width, IphoneEnviroment.StatusBarHeight);
         }
 
         private void CreateGrid()
@@ -127,31 +198,37 @@ namespace StudyCards.Iphone
         private void CreateUIControls()
         {
             __frontCard = new UICardEditorView();
-            __frontCard.ParentController = this;
+
             __backCard = new UICardEditorView();
-            __backCard.ParentController = this;
             __backCard.Hidden = true;
 
             __selectFront = new UIButton(UIButtonType.System);
             __selectFront.SetTitle("Front", UIControlState.Normal);
-            __selectFront.TouchDown += this.SelectFront_TouchDown;
             __selectFront.Selected = true;
 
             __selectBack = new UIButton(UIButtonType.System);
             __selectBack.SetTitle("Back", UIControlState.Normal);
-            __selectBack.TouchDown += this.SelectBack_TouchDown;
             __selectBack.Selected = false;
 
             __done = new UIBarButtonItem(UIBarButtonSystemItem.Done);
-            __done.Clicked += this.Done_Click;
 
             __cancel = new UIBarButtonItem(UIBarButtonSystemItem.Cancel);
-            __cancel.Clicked += this.Cancel_Click;
 
             __chooseTemplate = new UIBarButtonItem();
-            __chooseTemplate.Title = "Choose template";
+            __chooseTemplate.Title = FRONT_TEMPLATE;
             __chooseTemplate.Style = UIBarButtonItemStyle.Plain;
-            __chooseTemplate.Clicked += ChooseTemplate_Click;
+
+            __settings = new UIButton(UIButtonType.Custom);
+            UIImage settingsEnabledIcon = UIImage.FromFile("SettingsEnabledIcon.png");
+            UIImage settingsDisabledIcon = UIImage.FromFile("SettingsDisabledIcon.png");
+            __settings.SetImage(settingsDisabledIcon, UIControlState.Normal);
+            __settings.SetImage(settingsEnabledIcon, UIControlState.Selected);
+            settingsEnabledIcon.Dispose();
+            settingsDisabledIcon.Dispose();
+
+            __statusBarBackground = new UIView();
+            __statusBarBackground.BackgroundColor = UIColor.FromWhiteAlpha(0.8F, 0.5F);
+            __statusBarBackground.Hidden = true;
         }
 
         private void AddUIControls()
@@ -165,9 +242,13 @@ namespace StudyCards.Iphone
 
             this.NavigationItem.HidesBackButton = true;
             this.NavigationItem.LeftBarButtonItem = __cancel;
-            this.NavigationItem.RightBarButtonItems = new UIBarButtonItem[]{ __done, __chooseTemplate };
+            UIBarButtonItem dummy = new UIBarButtonItem(UIBarButtonSystemItem.FixedSpace);
+            dummy.Width = 25;
+            this.NavigationItem.RightBarButtonItems = new UIBarButtonItem[]{ __done, dummy, __chooseTemplate };
 
             this.Add(__innerFrame);
+            this.Add(__settings);
+            this.Add(__statusBarBackground);
         }
 
         private PointF __originalFrontButonPosition;
@@ -179,14 +260,14 @@ namespace StudyCards.Iphone
             __originalBackButtonPosition = __selectBack.Frame.Location;
 
             float selectBackBottom = __selectBack.Frame.Y + __selectBack.Frame.Height;
-            float keyboardFrameTop = this.View.Frame.Height - keyboardSize.Height;
+            float keyboardFrameTop = __innerFrame.Frame.Height - keyboardSize.Height;
 
             float adjustHeight = (selectBackBottom > keyboardFrameTop) ? (selectBackBottom - keyboardFrameTop) : 0;
 
             if (adjustHeight == 0)
                 return;
 
-            UIView.Animate(0.4, new NSAction(() =>
+            UIView.Animate(KEYBOARD_ADJUSTMENT_DURATION, new NSAction(() =>
             {
                 __selectFront.Frame = new RectangleF(__selectFront.Frame.X, __selectFront.Frame.Y - adjustHeight, __selectFront.Frame.Width, __selectFront.Frame.Height);
                 __selectBack.Frame = new RectangleF(__selectBack.Frame.X, __selectBack.Frame.Y - adjustHeight, __selectBack.Frame.Width, __selectBack.Frame.Height);
@@ -195,7 +276,7 @@ namespace StudyCards.Iphone
 
         private void ReturnSelectButtonsToOriginalPlace()
         {
-            UIView.Animate(0.4, new NSAction(() =>
+            UIView.Animate(KEYBOARD_ADJUSTMENT_DURATION, new NSAction(() =>
             {
                 __selectFront.Frame = new RectangleF(__originalFrontButonPosition, __selectFront.Frame.Size);
                 __selectBack.Frame = new RectangleF(__originalBackButtonPosition, __selectBack.Frame.Size);
@@ -254,6 +335,9 @@ namespace StudyCards.Iphone
             __selectFront.Selected = true;
             __backCard.Hidden = true;
             __selectBack.Selected = false;
+            __chooseTemplate.Title = FRONT_TEMPLATE;
+
+            UIView.Transition(__backCard, __frontCard, TRANSITION_DURATION, UIViewAnimationOptions.TransitionFlipFromBottom, null);
         }
 
         private void SelectBack_TouchDown(object sender, EventArgs e)
@@ -267,6 +351,8 @@ namespace StudyCards.Iphone
             __selectFront.Selected = false;
             __backCard.Hidden = false;
             __selectBack.Selected = true;
+            __chooseTemplate.Title = BACK_TEMPLATE;
+            UIView.Transition(__frontCard, __backCard, TRANSITION_DURATION, UIViewAnimationOptions.TransitionFlipFromBottom, null);
         }
 
         private void Cancel_Click(object sender, EventArgs e)
@@ -290,6 +376,52 @@ namespace StudyCards.Iphone
         private void ChooseTemplate_Click(object sender, EventArgs e)
         {
             this.DismissKeyboard();
+
+            __frontCard.CommitCardViewData();
+            __backCard.CommitCardViewData();
+
+            if (__selectFront.Selected)
+            {
+                __frontTemplateDialog = new TemplateDialog(this.CurrentFrontTemplate);
+                __frontTemplateDialog.SelectionChanged += this.FrontTemplateDialog_SelectionChanged;
+                this.NavigationController.PushViewController(__frontTemplateDialog, true);
+            }
+            else
+            {
+                __backTemplateDialog = new TemplateDialog(this.CurrentBackTemplate);
+                __backTemplateDialog.SelectionChanged += this.BackTemplateDialog_SelectionChanged;
+                this.NavigationController.PushViewController(__backTemplateDialog, true);
+            }
+        }
+
+        private void Settings_TouchDown(object sender, EventArgs e)
+        {
+            __settings.Selected = !__settings.Selected;
+
+            if (__settings.Selected)
+            {
+                this.NavigationController.SetNavigationBarHidden(true, true);
+                __statusBarBackground.Hidden = false;
+            }
+            else
+            {
+                this.NavigationController.SetNavigationBarHidden(false, true);
+                __statusBarBackground.Hidden = true;
+            }
+        }
+
+        private void FrontTemplateDialog_SelectionChanged(object sender, EventArgs e)
+        {
+            TemplateDialog dialog = sender as TemplateDialog;
+            Template selectedTemplate = dialog.SelectedTemplate;
+            __presenter.ChangeFrontTemplate(selectedTemplate);
+        }
+
+        private void BackTemplateDialog_SelectionChanged(object sender, EventArgs e)
+        {
+            TemplateDialog dialog = sender as TemplateDialog;
+            Template selectedTemplate = dialog.SelectedTemplate;
+            __presenter.ChangeBackTemplate(selectedTemplate);
         }
     }
 }

@@ -1,6 +1,17 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhoneSimulator" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhoneRetina.7.1" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="StudyCards.Iphone/CardEditorView.cs">
+    <Files>
+      <File FileName="StudyCards.Iphone/DesksView.cs" Line="1" Column="1" />
+      <File FileName="StudyCards.Iphone/CardEditorView.cs" Line="255" Column="53" />
+      <File FileName="StudyCards.Mobile/Views/ICardEditorView.cs" Line="1" Column="1" />
+      <File FileName="StudyCards.Mobile/Presenters/CardEditorPresenter.cs" Line="1" Column="1" />
+      <File FileName="StudyCards.Mobile/Card.cs" Line="1" Column="1" />
+      <File FileName="StudyCards.Iphone/SubViews/UICardEditorView.cs" Line="161" Column="24" />
+      <File FileName="StudyCards.Iphone/DeskViewerView.cs" Line="179" Column="110" />
+      <File FileName="StudyCards.Iphone/CustomNavigationController.cs" Line="20" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

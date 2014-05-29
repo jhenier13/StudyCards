@@ -105,11 +105,13 @@ namespace StudyCards.Mobile
 
         public static List<TemplateElement> ParseFromStringRepresentation(string representationStr)
         {
-            List<TemplateElement> elements = new List<TemplateElement>();
-            XmlDocument document = new XmlDocument();
-            document.LoadXml(representationStr);
+            //This is a hack because the XmlDocument.LoadXml only works with one element
+            representationStr = string.Format("<TemplateElements> {0} </TemplateElements>", representationStr);
 
-            foreach (XmlNode node in document.ChildNodes)
+            List<TemplateElement> elements = new List<TemplateElement>();
+            XmlNode rootNode = XmlUtils.CreateNodeFromData(representationStr);
+
+            foreach (XmlNode node in rootNode.ChildNodes)
             {
                 if (node.NodeType != XmlNodeType.Element)
                     continue;

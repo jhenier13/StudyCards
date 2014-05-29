@@ -30,5 +30,11 @@ namespace StudyCards.Iphone.DrawingViews
     {
         public IDrawingViewModalController ModalController { get; set; }
     }
+
+    public static class DrawingViewConstants
+    {
+        public static readonly double KEYBOARD_ADJUST_ANIMATIONS_DURATION = 0.2;
+        public static readonly double CARD_FLIP_ANIMATION_DURATION = 0.5;
+    }
 }
 

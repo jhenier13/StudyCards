@@ -1,15 +1,16 @@
 ﻿using System;
-using StudyCards.Mobile.Views;
-using MonoTouch.UIKit;
-using StudyCards.Mobile.Presenters;
-using StudyCards.Mobile;
 using System.Collections.Generic;
 using System.Drawing;
-using UIComponents.Events;
+using LobaSoft.IOS.UIComponents;
+using LobaSoft.IOS.UIComponents.Events;
+using MonoTouch.UIKit;
+using StudyCards.Mobile;
+using StudyCards.Mobile.Presenters;
+using StudyCards.Mobile.Views;
 
 namespace StudyCards.Iphone
 {
-    public class DesksView : UIViewController, IDesksView
+    public class DesksView : UIViewController, IDesksView, IDisposableView
     {
         //Flags
         private bool __layoutInitialized = false;
@@ -33,10 +34,15 @@ namespace StudyCards.Iphone
             }
             set
             {
+                if (__desks == value)
+                    return;
+
+                if (__desksSource != null)
+                    this.DetachDesksSourceEventHandlers();
+
                 __desks = value;
                 __desksSource = new DesksTableSource(__desks);
-                __desksSource.RowDeleted += this.DesksSource_RowDeleted;
-                __desksSource.RowHasBeenSelected += this.DesksSource_RowSelected;
+                this.AttachDesksSourceEventHandlers();
                 __table.Source = __desksSource;
             }
         }
@@ -45,6 +51,37 @@ namespace StudyCards.Iphone
         {
             __presenter = new DesksPresenter(this);
             this.EdgesForExtendedLayout = UIRectEdge.None;
+            this.Title = "All Desks";
+        }
+
+        public void AttachEventHandlers()
+        {
+            __addDesk.Clicked += this.AddDesk_Click;
+            __templates.Clicked += this.Templates_Click;
+            __edit.Clicked += this.Edit_Click;
+            __editDone.Clicked += this.EditDone_Click;
+
+            if (__desksSource != null)
+                this.AttachDesksSourceEventHandlers();
+        }
+
+        public void DetachEventHandlers()
+        {
+            __addDesk.Clicked -= this.AddDesk_Click;
+            __templates.Clicked -= this.Templates_Click;
+            __edit.Clicked -= this.Edit_Click;
+            __editDone.Clicked -= this.EditDone_Click;
+
+            if (__desksSource != null)
+                this.DetachDesksSourceEventHandlers();
+        }
+
+        public void CleanSubViews()
+        {
+        }
+
+        public void AddSubViews()
+        {
         }
 
         public override void LoadView()
@@ -63,14 +100,20 @@ namespace StudyCards.Iphone
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            this.NavigationController.ToolbarHidden = true;
+            this.AttachEventHandlers();
 
             if (!__layoutInitialized)
-            {
                 this.UpdateLayout();
-                __layoutInitialized = true;
-            }
 
+            __layoutInitialized = true;
             __presenter.LoadData();
+        }
+
+        public override void ViewDidDisappear(bool animated)
+        {
+            base.ViewDidDisappear(animated);
+            this.DetachEventHandlers();
         }
 
         public void UpdateLayout()
@@ -82,20 +125,17 @@ namespace StudyCards.Iphone
         {
             __table = new UITableView();
             __table.Frame = new RectangleF(0, 0, this.View.Frame.Width, this.View.Frame.Height);
+            __table.SeparatorStyle = UITableViewCellSeparatorStyle.None;
 
             __addDesk = new UIBarButtonItem(UIBarButtonSystemItem.Add);
-            __addDesk.Clicked += this.AddDesk_Click;
 
             __templates = new UIBarButtonItem();
             __templates.Style = UIBarButtonItemStyle.Plain;
             __templates.Title = "Templates";
-            __templates.Clicked += this.Templates_Click;
 
             __edit = new UIBarButtonItem(UIBarButtonSystemItem.Edit);
-            __edit.Clicked += this.Edit_Click;
 
             __editDone = new UIBarButtonItem(UIBarButtonSystemItem.Done);
-            __editDone.Clicked += this.EditDone_Click;
         }
 
         private void AddUIControls()
@@ -103,6 +143,18 @@ namespace StudyCards.Iphone
             this.Add(__table);
             this.NavigationItem.LeftBarButtonItem = __addDesk;
             this.NavigationItem.RightBarButtonItems = new UIBarButtonItem[]{ __edit, __templates };
+        }
+
+        private void AttachDesksSourceEventHandlers()
+        {
+            __desksSource.RowDeleted += this.DesksSource_RowDeleted;
+            __desksSource.RowHasBeenSelected += this.DesksSource_RowSelected;
+        }
+
+        private void DetachDesksSourceEventHandlers()
+        {
+            __desksSource.RowDeleted -= this.DesksSource_RowDeleted;
+            __desksSource.RowHasBeenSelected -= this.DesksSource_RowSelected;
         }
 
         private void AddDesk_Click(object sender, EventArgs e)

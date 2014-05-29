@@ -36,6 +36,15 @@ namespace StudyCards.Mobile
             SQLiteLinker.ExecuteQuery(updateIndexQuery);
         }
 
+        public void Delete()
+        {
+            if (this.Id == PersistenceDefaultValues.NO_IDENTIFIED)
+                return;
+
+            string deleteQuery = string.Format("DELETE FROM {0} WHERE {1}={2}", TABLE_NAME, ID, this.Id);
+            SQLiteLinker.ExecuteQuery(deleteQuery);
+        }
+
         internal static List<Card> GetCards(int deskId)
         {
             List<Card> deskCards = new List<Card>();
@@ -70,7 +79,16 @@ namespace StudyCards.Mobile
 
         private void Update()
         {
-            throw new NotImplementedException();
+            string frontValuesStr = this.FrontValuesToString();
+            string backValuesStr = this.BackValuesToString();
+            string frontTemplateElements = this.FrontTemplateElementsToString();
+            string backTemplateElements = this.BackTemplateElementsToString();
+
+            string updateQuery = string.Format("UPDATE {0} SET {3}={4}, {5}={6}, {7}='{8}', {9}='{10}', {11}='{12}', {13}='{14}' WHERE {1}={2}",
+                                     TABLE_NAME, ID, this.Id, DESK_ID, this.DeskId, INDEX, this.Index, FRONT_TEMPLATE, frontTemplateElements,
+                                     BACK_TEMPLATE, backTemplateElements, FRONT_VALUES, SQLiteLinker.FixSQLInjection(frontValuesStr), BACK_VALUES, SQLiteLinker.FixSQLInjection(backValuesStr));
+
+            SQLiteLinker.ExecuteQuery(updateQuery);
         }
 
         private void LoadData(DataRow row)

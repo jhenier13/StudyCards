@@ -1,6 +1,6 @@
 ﻿using System;
 using MonoTouch.UIKit;
-using UIComponents.Frames;
+using LobaSoft.IOS.UIComponents.Frames;
 using System.Drawing;
 
 namespace StudyCards.Iphone.DrawingViews

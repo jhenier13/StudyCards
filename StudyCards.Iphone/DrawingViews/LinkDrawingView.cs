@@ -123,7 +123,7 @@ namespace StudyCards.Iphone.DrawingViews
             if (__link == null)
                 return;
 
-            string label = (string.IsNullOrEmpty(__link.Label)) ? DEFAULT_LABEL : __link.Label;
+            string label = (string.IsNullOrEmpty(__label)) ? DEFAULT_LABEL : __label;
             __openWeb.SetTitle(label, UIControlState.Normal);
             __openWeb.SetTitleColor(LINK_COLOR, UIControlState.Normal);
             __openWeb.TitleLabel.TextAlignment = DrawingUtils.ConvertToUITextAlignment(__link.Alignment);
@@ -165,8 +165,8 @@ namespace StudyCards.Iphone.DrawingViews
         private void WebLink_TouchDown(object sender, EventArgs e)
         {
             LinkDrawingViewModalController linkWindow = new LinkDrawingViewModalController();
-            linkWindow.Label = __link.Label;
-            linkWindow.Url = __link.WebLink;
+            linkWindow.Label = __label;
+            linkWindow.Url = __webLink;
             RequiresModalControllerEventArgs requireArgs = new RequiresModalControllerEventArgs();
             requireArgs.ModalController = linkWindow;
 

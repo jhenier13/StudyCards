@@ -1,5 +1,5 @@
 ﻿using System;
-using UIComponents.Frames;
+using LobaSoft.IOS.UIComponents.Frames;
 using MonoTouch.UIKit;
 using System.Drawing;
 
@@ -81,6 +81,14 @@ namespace StudyCards.Iphone.DrawingViews
             __isLoaded = true;
         }
 
+        public override void TouchesBegan(MonoTouch.Foundation.NSSet touches, UIEvent evt)
+        {
+            base.TouchesBegan(touches, evt);
+
+            __label.ResignFirstResponder();
+            __url.ResignFirstResponder();
+        }
+
         public override bool HasNextModalController()
         {
             return false;
@@ -95,7 +103,7 @@ namespace StudyCards.Iphone.DrawingViews
         {
             __innerFrame = new GridView();
             __innerFrame.Frame = new RectangleF(0, 0, this.View.Frame.Width, this.View.Frame.Height);
-            __innerFrame.AddRowsAndColumns("0.5*;25;40;40;25;0.5*", "0.5*;100;100;0.5*");
+            __innerFrame.AddRowsAndColumns("0.2*;25;40;40;25;0.8*", "0.5*;130;130;0.5*");
         }
 
         private void CreateUIControls()

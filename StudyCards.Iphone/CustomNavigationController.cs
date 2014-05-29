@@ -22,6 +22,7 @@ namespace StudyCards.Iphone
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            this.InteractivePopGestureRecognizer.Enabled = false;
         }
 
         public override void ViewDidLoad()

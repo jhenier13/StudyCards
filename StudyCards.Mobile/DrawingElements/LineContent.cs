@@ -37,6 +37,13 @@ namespace StudyCards.Mobile.DrawingElements
         {
             this.Content = element;
         }
+
+        internal override bool Search(string searchCriteria)
+        {
+            string contentLowerCase = this.Content.ToLowerInvariant();
+            string search = searchCriteria.ToLowerInvariant();
+            return contentLowerCase.Contains(search);
+        }
     }
 }
 

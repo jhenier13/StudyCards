@@ -3,7 +3,7 @@ using MonoTouch.UIKit;
 using StudyCards.Mobile;
 using StudyCards.Mobile.DrawingElements;
 using System.Drawing;
-using UIComponents.CustomControls;
+using LobaSoft.IOS.UIComponents.CustomControls;
 using MonoTouch.Foundation;
 
 namespace StudyCards.Iphone.DrawingViews
@@ -108,7 +108,7 @@ namespace StudyCards.Iphone.DrawingViews
                 adjustedYPosition = 0;
             }
 
-            UIView.Animate(0.4, new NSAction(() =>
+            UIView.Animate(DrawingViewConstants.KEYBOARD_ADJUST_ANIMATIONS_DURATION, new NSAction(() =>
             {
                 this.Frame = new RectangleF(this.Frame.X, adjustedYPosition, this.Frame.Width, this.Frame.Height - remainingMovement);
             }));
@@ -116,7 +116,7 @@ namespace StudyCards.Iphone.DrawingViews
 
         public void RestoreToHideKeyboard()
         {
-            UIView.Animate(0.4, new NSAction(() =>
+            UIView.Animate(DrawingViewConstants.KEYBOARD_ADJUST_ANIMATIONS_DURATION, new NSAction(() =>
             {
                 this.Frame = __containerFrameBeforeAnimation;
             }));

@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using LobaSoft.IOS.UIComponents.Events;
+using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using StudyCards.Mobile;
-using System.Collections.Generic;
-using MonoTouch.Foundation;
-using UIComponents.Events;
 
 namespace StudyCards.Iphone
 {
@@ -28,22 +28,35 @@ namespace StudyCards.Iphone
             return __items.Count;
         }
 
+        public override float GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
+        {
+            return 100.0F;
+        }
+
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            UITableViewCell cell = tableView.DequeueReusableCell(__cellIdentifier);
+            DeskTableViewCell cell = tableView.DequeueReusableCell(__cellIdentifier) as DeskTableViewCell;
 
             if (cell == null)
-                cell = new UITableViewCell(UITableViewCellStyle.Default, __cellIdentifier);
+                cell = new DeskTableViewCell(__cellIdentifier);
 
             Desk item = __items[indexPath.Row];
-            cell.TextLabel.Text = item.Name;
+            cell.NameLabel.Text = item.Name;
+
+            Background deskBackground = item.GetBackground();
+            UIImage deskBackgroundImage = UIImage.FromFile(deskBackground.Location);
+            cell.BackgroundContainer.Image = deskBackgroundImage;
+            deskBackgroundImage.Dispose();
 
             return cell;
         }
 
         public override UITableViewCellEditingStyle EditingStyleForRow(UITableView tableView, NSIndexPath indexPath)
         {
-            return UITableViewCellEditingStyle.Delete;
+            if (tableView.Editing)
+                return UITableViewCellEditingStyle.Delete;
+
+            return UITableViewCellEditingStyle.None;
         }
 
         public override void CommitEditingStyle(UITableView tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath indexPath)

@@ -12,17 +12,17 @@ namespace StudyCards.Iphone.SubViews
         //Flags
         private bool __isLoaded = false;
         //Attributes
-        private Background __cardBackground;
         private List<CardRelation> _elements;
         //UIControls
         private UIImageView __backgroundView;
+        private UIImage _cardBackground;
 
-        public Background CardBackground
+        public UIImage CardBackground
         {
-            get{ return __cardBackground; }
+            get{ return _cardBackground; }
             set
             {
-                __cardBackground = value; 
+                _cardBackground = value; 
 
                 if (!__isLoaded)
                     return;
@@ -74,11 +74,6 @@ namespace StudyCards.Iphone.SubViews
             this.AddUIControls();
         }
 
-        public UICardView(Background cardBackground)
-        {
-            this.CardBackground = cardBackground;
-        }
-
         public override void LayoutSubviews()
         {
             base.LayoutSubviews();
@@ -109,8 +104,7 @@ namespace StudyCards.Iphone.SubViews
 
         private void SetBackgroundImage()
         {
-            UIImage image = UIImage.FromFile(this.CardBackground.Location);
-            __backgroundView.Image = image;
+            __backgroundView.Image = _cardBackground;
         }
 
         private void DrawElements()

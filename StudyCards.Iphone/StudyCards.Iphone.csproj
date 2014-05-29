@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{460E4E1E-F904-44CA-AAFC-45A3BF746DD6}</ProjectGuid>
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -114,6 +114,10 @@
     <BundleResource Include="Resources\Backgrounds\Light Wooden.png" />
     <BundleResource Include="Resources\DetailDisclosureIcon.png" />
     <BundleResource Include="Resources\ImageIcon.png" />
+    <BundleResource Include="Resources\AddIcon.png" />
+    <BundleResource Include="Resources\OrangeButton.jpg" />
+    <BundleResource Include="Resources\SettingsDisabledIcon.png" />
+    <BundleResource Include="Resources\SettingsEnabledIcon.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -153,7 +157,14 @@
     <Compile Include="DisplayViews\TextDisplayView.cs" />
     <Compile Include="DisplayViews\IDisplayView.cs" />
     <Compile Include="DisplayViews\DisplayViewFactory.cs" />
-    <Compile Include="CardDisplayView.cs"/>
+    <Compile Include="CardDisplayView.cs" />
+    <Compile Include="SubViews\UIAddCardView.cs" />
+    <Compile Include="DeskTableViewCell.cs" />
+    <Compile Include="SubViews\UICardViewBase.cs" />
+    <Compile Include="DeskViewerView_Events.cs" />
+    <Compile Include="DeskViewerView_AttachComponents.cs" />
+    <Compile Include="DeskViewerView_Layout.cs" />
+    <Compile Include="DeskViewerView_Helpers.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -169,13 +180,9 @@
       <Project>{22A15D7D-70FF-4B90-8F77-2B59CE8D316F}</Project>
       <Name>StudyCards.IOSLink</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\LobaSoft.IOS\UIComponents\UIComponents.csproj">
+    <ProjectReference Include="..\..\LobaSoft.IOS\LobaSoft.IOS.UIComponents\LobaSoft.IOS.UIComponents.csproj">
       <Project>{F544C0A6-7A53-4629-B700-907342C0AF88}</Project>
-      <Name>UIComponents</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\StudyCards.Mobile\StudyCards.Mobile.csproj">
-      <Project>{5E314789-4755-466D-A682-E59207EC6C2A}</Project>
-      <Name>StudyCards.Mobile</Name>
+      <Name>LobaSoft.IOS.UIComponents</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

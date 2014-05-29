@@ -54,6 +54,23 @@ namespace StudyCards.Mobile
                 __backElements.Add(new CardRelation(){ Element = newTemplateElement, Content = content });
             }
         }
+
+        public bool Search(string searchCriteria)
+        {
+            foreach (CardRelation frontRelation in this.FrontElements)
+            {
+                if (frontRelation.Content.Search(searchCriteria))
+                    return true;
+            }
+
+            foreach (CardRelation backRelation in this.BackElements)
+            {
+                if (backRelation.Content.Search(searchCriteria))
+                    return true;
+            }
+
+            return false;
+        }
     }
 
     internal sealed class CardElement
@@ -73,7 +90,7 @@ namespace StudyCards.Mobile
 
         internal void FromStringRepresentation(string representation)
         {
-            string[] attributes = representation.Split(new string[]{ ATTRIBUTES_SEPARATOR }, StringSplitOptions.RemoveEmptyEntries);
+            string[] attributes = representation.Split(new string[]{ ATTRIBUTES_SEPARATOR }, StringSplitOptions.None);
             this.TemplateElementID = attributes[0];
             this.Value = attributes[1];
         }
